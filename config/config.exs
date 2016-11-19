@@ -2,6 +2,22 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
+config :logger, level: :warn
+
+config :passwordless,
+  secret_key: "really really really really really really really really secret",
+  mailer: Passwordless.TestMailer,
+  schema: Passwordless.TestUser,
+  repo: Passwordless.TestRepo
+
+config :passwordless, Passwordless.TestRepo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "postgres",
+  password: "postgres",
+  database: "passwordless_test",
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox
+
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
 # file won't be loaded nor affect the parent project. For this reason,
