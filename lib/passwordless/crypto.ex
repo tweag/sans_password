@@ -18,10 +18,6 @@ defmodule Passwordless.Crypto do
   end
 
   defp to_url_safe(str) do
-    str
-    |> Base.url_encode64
-    |> String.replace(~r([\n\=]), "")
-    |> String.replace(~r(\+), "-")
-    |> String.replace(~r(\/), "_")
+    Base.url_encode64(str, padding: false)
   end
 end
