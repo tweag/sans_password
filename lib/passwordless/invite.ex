@@ -52,15 +52,15 @@ defmodule Passwordless.Invite do
     |> Config.repo.update!
   end
 
-  defp invite(nil, _mailer, _opts), do: nil
+  defp invite(nil, opts, mailer_fun), do: nil
   defp invite(%{login_token: _} = user, opts, mailer_fun) do
     user = prepare_for_login(user)
     mailer_fun.(user, login_params(user, opts))
     user
   end
-  defp invite(email, mailer, opts) when is_binary(email) do
+  defp invite(email, opts, mailer_fun) when is_binary(email) do
     if user = email |> to_email_query |> Config.repo.one do
-      invite(user, mailer, opts)
+      invite(user, opts, mailer_fun)
     end
   end
 
