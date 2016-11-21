@@ -12,7 +12,7 @@ defmodule Passwordless.CallbacksTest do
         |> TestRepo.insert!
         |> prepare_for_login
 
-      [login_token: user.login_token, user: user]
+      [login_token: user.raw_login_token, user: user]
     end
 
     test "resets the login_token", %{login_token: login_token} do

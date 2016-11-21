@@ -35,17 +35,17 @@ defmodule Passwordless.InviteTest do
 
     test "an email is delivered", %{user: user} do
       user = invite_to_login(user)
-      assert_email_sent({:login, user, [login_token: user.login_token]})
+      assert_email_sent({:login, user, [login_token: user.raw_login_token]})
     end
 
     test "an email is delivered with extra params", %{user: user} do
       user = invite_to_login(user, redirect: "/foo")
-      assert_email_sent({:login, user, [login_token: user.login_token, redirect: "/foo"]})
+      assert_email_sent({:login, user, [login_token: user.raw_login_token, redirect: "/foo"]})
     end
 
     test "an email is delivered when given an email addresses" do
       user = invite_to_login(@email)
-      assert_email_sent({:login, user, [login_token: user.login_token]})
+      assert_email_sent({:login, user, [login_token: user.raw_login_token]})
     end
 
     test "an email is not delivered when user not found" do
@@ -79,17 +79,17 @@ defmodule Passwordless.InviteTest do
 
     test "an email is delivered", %{user: user} do
       user = invite_to_confirm(user)
-      assert_email_sent({:confirm, user, [login_token: user.login_token]})
+      assert_email_sent({:confirm, user, [login_token: user.raw_login_token]})
     end
 
     test "an email is delivered with extra params", %{user: user} do
       user = invite_to_confirm(user, redirect: "/foo")
-      assert_email_sent({:confirm, user, [login_token: user.login_token, redirect: "/foo"]})
+      assert_email_sent({:confirm, user, [login_token: user.raw_login_token, redirect: "/foo"]})
     end
 
     test "an email is delivered when given an email address" do
       user = invite_to_confirm(@email)
-      assert_email_sent({:confirm, user, [login_token: user.login_token]})
+      assert_email_sent({:confirm, user, [login_token: user.raw_login_token]})
     end
 
     test "an email is not delivered when user is not found" do

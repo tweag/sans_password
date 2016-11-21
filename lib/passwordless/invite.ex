@@ -29,8 +29,11 @@ defmodule Passwordless.Invite do
   end
 
   def login_params(user, opts \\ []) do
-    opts
-    |> Keyword.put(:login_token, user.login_token)
+    if token = user.raw_login_token do
+      Keyword.put(opts, :login_token, token)
+    else
+      raise "User has not been assigned a raw login token."
+    end
   end
 
   def registration_params(email, opts \\ []) do
