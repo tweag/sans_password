@@ -1,5 +1,5 @@
 defmodule Passwordless.Crypto do
-  @secret_key Application.get_env(:passwordless, :secret_key)
+  alias Passwordless.Config
 
   def valid_hmac?(token, from: str) do
     hmac(str) == token
@@ -7,7 +7,7 @@ defmodule Passwordless.Crypto do
 
   def hmac(str) do
     :sha256
-    |> :crypto.hmac(@secret_key, str)
+    |> :crypto.hmac(Config.secret_key, str)
     |> to_url_safe
   end
 

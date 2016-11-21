@@ -1,11 +1,8 @@
 defmodule Passwordless.Callbacks do
-  alias Passwordless.Crypto
-
-  @repo Application.get_env(:passwordless, :repo)
-  @schema Application.get_env(:passwordless, :schema)
+  alias Passwordless.{Config, Crypto}
 
   def login(token) do
-    if user = @repo.get_by(@schema, login_token: token) do
+    if user = Config.repo.get_by(Config.schema, login_token: token) do
       reset_token(user)
     else
       :invalid_token
@@ -14,7 +11,7 @@ defmodule Passwordless.Callbacks do
 
   def register(changeset, [token: token, email: email]) do
     if Crypto.valid_hmac?(token, from: email) do
-      with {:ok, user} <- @repo.insert(changeset),
+      with {:ok, user} <- Config.repo.insert(changeset),
            {:ok, user} <- reset_token(user),
            do: {:ok, user}
     else
@@ -23,12 +20,8 @@ defmodule Passwordless.Callbacks do
   end
 
   defp reset_token(user) do
-    changeset = @schema.passwordless_changeset(user, %{
-      login_token: nil,
-      login_requested_at: nil,
-      last_login_at: Ecto.DateTime.utc
-    })
-
-    @repo.update(changeset)
+    user
+    |> Config.schema.passwordless_changeset(:callback)
+    |> Config.repo.update()
   end
 end

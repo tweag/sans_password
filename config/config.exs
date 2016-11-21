@@ -4,7 +4,7 @@ use Mix.Config
 
 config :logger, level: :warn
 
-config :passwordless,
+config :passwordless, Passwordless,
   secret_key: "really really really really really really really really secret",
   mailer: Passwordless.TestMailer,
   schema: Passwordless.TestUser,
