@@ -1,12 +1,11 @@
 defmodule Passwordless.SchemaTest do
   use Passwordless.Case
-  alias Passwordless.{Crypto, TestUser}
+  alias Passwordless.TestUser
 
   describe "passwordless_changeset with :invite" do
-    test "sets a raw token" do
-      changeset = TestUser.passwordless_changeset(%TestUser{}, :invite)
-      %{raw_login_token: raw, login_token: hashed} = changeset.changes
-      assert Crypto.valid_hmac?(hashed, from: raw)
+    test "sets a login_requested_at timestamp" do
+      changeset = TestUser.passwordless_changeset(%TestUser{}, %{}, :invite)
+      assert changeset.changes.login_requested_at
     end
   end
 end

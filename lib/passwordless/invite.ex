@@ -1,7 +1,9 @@
 defmodule Passwordless.Invite do
+  defstruct [:email]
+
   import Ecto.Query, only: [from: 2]
 
-  alias Passwordless.{Crypto, Config}
+  alias Passwordless.Config
 
   @doc """
   Sends an email to a user inviting them to login.
@@ -29,17 +31,11 @@ defmodule Passwordless.Invite do
   end
 
   def login_params(user, opts \\ []) do
-    if token = user.raw_login_token do
-      Keyword.put(opts, :login_token, token)
-    else
-      raise "User has not been assigned a raw login token."
-    end
+    put_token(opts, :login_token, user)
   end
 
   def registration_params(email, opts \\ []) do
-    opts
-    |> Keyword.put(:email, email)
-    |> Keyword.put(:registration_token, Crypto.hmac(email))
+    put_token(opts, :registration_token, %__MODULE__{email: email})
   end
 
   @doc """
@@ -48,12 +44,12 @@ defmodule Passwordless.Invite do
   """
   def prepare_for_login(user) do
     user
-    |> Config.schema.passwordless_changeset(:invite)
+    |> Config.schema.passwordless_changeset(%{}, :invite)
     |> Config.repo.update!
   end
 
   defp invite(nil, opts, mailer_fun), do: nil
-  defp invite(%{login_token: _} = user, opts, mailer_fun) do
+  defp invite(%{login_requested_at: _} = user, opts, mailer_fun) do
     user = prepare_for_login(user)
     mailer_fun.(user, login_params(user, opts))
     user
@@ -62,6 +58,11 @@ defmodule Passwordless.Invite do
     if user = email |> to_email_query |> Config.repo.one do
       invite(user, opts, mailer_fun)
     end
+  end
+
+  defp put_token(opts, name, struct) do
+    {:ok, jwt, _full_claims} = Guardian.encode_and_sign(struct)
+    Keyword.put(opts, name, jwt)
   end
 
   defp to_email_query(email) do

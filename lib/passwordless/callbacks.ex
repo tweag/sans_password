@@ -1,34 +1,31 @@
 defmodule Passwordless.Callbacks do
-  alias Passwordless.{Config, Crypto}
+  alias Passwordless.Config
 
-  def login(raw_login_token) do
-    if user = find_login_token(raw_login_token) do
-      reset_login_token(user)
-    else
-      :invalid_token
-    end
+  def login(token) do
+    with {:ok, claims} <- Guardian.decode_and_verify(token),
+         {:ok, user}   <- Guardian.serializer.from_token(claims["sub"]),
+         {:ok, user}   <- update_login_timestamps(user),
+         do: {:ok, user}
   end
 
-  def register(changeset, [token: token, email: email]) do
-    if Crypto.valid_hmac?(token, from: email) do
-      with {:ok, user} <- Config.repo.insert(changeset),
-           {:ok, user} <- reset_login_token(user),
-           do: {:ok, user}
-    else
-      :invalid_token
-    end
+  def register(token, insert_fn \\ &insert_user/1) do
+    with {:ok, claims} <- Guardian.decode_and_verify(token),
+         {:ok, email}  <- Guardian.serializer.from_token(claims["sub"]),
+         {:ok, user}   <- insert_fn.(email),
+         {:ok, user}   <- update_login_timestamps(user),
+         do: {:ok, user}
   end
 
-  defp find_login_token(raw_login_token) do
-    hashed_login_token = Crypto.hmac(raw_login_token)
-
-    Config.schema
-    |> Config.repo.get_by(login_token: hashed_login_token)
-  end
-
-  defp reset_login_token(user) do
+  defp update_login_timestamps(user) do
     user
-    |> Config.schema.passwordless_changeset(:callback)
-    |> Config.repo.update()
+    |> Config.schema.passwordless_changeset(%{}, :callback)
+    |> Config.repo.update
+  end
+
+  defp insert_user(email) do
+    Config.schema
+    |> struct
+    |> Config.schema.passwordless_changeset(%{email: email}, :callback)
+    |> Config.repo.insert
   end
 end

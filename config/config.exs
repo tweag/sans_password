@@ -4,8 +4,13 @@ use Mix.Config
 
 config :logger, level: :warn
 
-config :passwordless, Passwordless,
+config :guardian, Guardian,
+  issuer: "PasswordlessTest",
+  ttl: {30, :days},
   secret_key: "really really really really really really really really secret",
+  serializer: Passwordless.Serializer
+
+config :passwordless, Passwordless,
   mailer: Passwordless.TestMailer,
   schema: Passwordless.TestUser,
   repo: Passwordless.TestRepo

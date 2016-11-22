@@ -17,11 +17,6 @@ defmodule Passwordless.Case do
     :ok
   end
 
-  def assert_email_sent(email) when is_tuple(email) do
-    email = Tuple.insert_at(email, 0, :delivered_email)
-    assert_received(^email)
-  end
-
   def refute_emails_sent do
     refute_received({:delivered_email, _, _, _})
   end
