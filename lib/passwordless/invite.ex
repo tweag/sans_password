@@ -48,7 +48,7 @@ defmodule Passwordless.Invite do
     |> Config.repo.update!
   end
 
-  defp invite(nil, opts, mailer_fun), do: nil
+  defp invite(nil, _opts, _mailer_fun), do: nil
   defp invite(%{login_requested_at: _} = user, opts, mailer_fun) do
     user = prepare_for_login(user)
     mailer_fun.(user, login_params(user, opts))
