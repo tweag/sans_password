@@ -30,11 +30,12 @@ defmodule Passwordless.Mixfile do
   defp deps do
     [{:ecto, "~> 2.0"},
      {:guardian, "~> 0.13"},
+     {:phoenix, "~> 1.2", optional: true},
      {:postgrex, "~> 0.12", only: :test}]
   end
 
-  defp applications(:test), do: [:logger, :ecto, :postgrex]
-  defp applications(_),     do: [:logger, :ecto]
+  defp applications(:test), do: [:logger, :phoenix, :phoenix_html, :ecto, :postgrex]
+  defp applications(_),     do: [:logger, :phoenix, :phoenix_html, :ecto]
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_),     do: ["lib"]

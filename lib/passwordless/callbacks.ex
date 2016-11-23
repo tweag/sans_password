@@ -8,7 +8,7 @@ defmodule Passwordless.Callbacks do
          do: {:ok, user}
   end
 
-  def register(token, insert_fn \\ &insert_user/1) do
+  def register(token, insert_fn) do
     with {:ok, claims} <- Guardian.decode_and_verify(token),
          {:ok, email}  <- Guardian.serializer.from_token(claims["sub"]),
          {:ok, user}   <- insert_fn.(email),
@@ -20,12 +20,5 @@ defmodule Passwordless.Callbacks do
     user
     |> Config.schema.passwordless_changeset(%{}, :callback)
     |> Config.repo.update
-  end
-
-  defp insert_user(email) do
-    Config.schema
-    |> struct
-    |> Config.schema.passwordless_changeset(%{email: email}, :callback)
-    |> Config.repo.insert
   end
 end
