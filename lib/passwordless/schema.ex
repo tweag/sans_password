@@ -17,17 +17,15 @@ defmodule Passwordless.Schema do
     end
   end
 
-  def passwordless_changeset(struct, params, action)
-  def passwordless_changeset(struct, params, :invite) do
-    passwordless_changeset(struct, Map.merge(params, %{
+  def passwordless_changeset(struct, :invite) do
+    passwordless_changeset(struct, %{
       login_requested_at: Ecto.DateTime.utc
-    }))
+    })
   end
-  def passwordless_changeset(struct, params, :callback) do
-    passwordless_changeset(struct, Map.merge(params, %{
-      login_requested_at: nil,
-      last_login_at: Ecto.DateTime.utc
-    }))
+  def passwordless_changeset(struct, :callback) do
+    passwordless_changeset(struct, %{
+      login_requested_at: nil
+    })
   end
   def passwordless_changeset(struct, params) do
     struct
