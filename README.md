@@ -9,13 +9,22 @@ Passwordless supports two different authentication flows:
 
 ## Installation
 
-Add `passwordless` to your list of dependencies in `mix.exs`:
+1. Add `passwordless` to your list of dependencies in `mix.exs`:
 
-    ```elixir
-    def deps do
-      [{:passwordless, "~> 0.1.0"}]
-    end
-    ```
+```elixir
+def deps do
+  [{:passwordless, "~> 0.1.0"}]
+end
+```
+
+2. Ensure bamboo is started before your application:
+
+```elixir
+def application do
+  [applications: [:passwordless]]
+end
+```
+
 
 ## Configuration
 
@@ -60,8 +69,7 @@ defmodule MyApp.SessionController do
   def after_invite_path(conn, _params), do: session_path(conn, :new)
   def after_invite_failed_path(conn, _params), do: session_path(conn, :new)
 
-  def after_login_path(_conn, %{"redirect" => path}), do: path
-  def after_login_path(_conn, _params), do: "/"
+  def after_login_path(conn, _params), do: page_path(conn, :index)
   def after_login_failed_path(conn, _params), do: session_path(conn, :new)
 
   def after_logout_path(conn, _parms), do: session_path(conn, :new)
@@ -80,7 +88,7 @@ end
 Then, create a template for the login form:
 
 ```eex
-# web/templates/new.html.eex
+<!-- web/templates/new.html.eex -->
 <%= form_for @conn, session_path(@conn, :create), [as: :session], fn f -> %>
   <div class="form-group">
     <label for="session[email]" class="control-label">Email</label>
@@ -123,7 +131,7 @@ end
 scope "/", MyApp do
   pipe_through [:browser, :browser_session, :require_auth]
 
-  get "/logout", SessionController, :delete  
+  get "/logout", SessionController, :delete
 end
 ```
 
@@ -139,7 +147,7 @@ defmodule MyApp.Emails do
 
   @from "admin@myapp.com"
 
-  def login(user, params \\ [) do
+  def login(user, params) do
     new_email
     |> from(@from)
     |> to(user.email)
@@ -149,7 +157,7 @@ defmodule MyApp.Emails do
     |> render(:login)
   end
 
-  def register(email, params \\ []) do
+  def register(email, params) do
     new_email
     |> from(@from)
     |> to(email)
@@ -163,5 +171,5 @@ end
 When rendering the email template, all that matters is that you include the login link like so:
 
 ```eex
-<%= link "Click here to login", to: login_url(MyApp.Endpoint, :callback, @params) %>
+<%= link "Click here to login", to: session_url(MyApp.Endpoint, :callback, @params) %>
 ```
