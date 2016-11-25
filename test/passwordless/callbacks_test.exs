@@ -4,13 +4,13 @@ defmodule Passwordless.CallbacksTest do
 
   @email "user@example.com"
 
-  defp create_user!(email) do
-    TestRepo.insert! %TestUser{email: email}
+  defp create_user(email) do
+    TestRepo.insert TestUser.changeset(%TestUser{}, %{email: email})
   end
 
   describe "login/1" do
     setup do
-      user = @email |> create_user! |> Invite.prepare_for_login
+      {:ok, user} = create_user(@email)
       user |> Invite.login_params |> Keyword.put(:user, user)
     end
 
@@ -19,17 +19,7 @@ defmodule Passwordless.CallbacksTest do
       assert next_user.id == user.id
     end
 
-    test "resets the login_requested_at", %{login_token: login_token} do
-      {:ok, user} = Callbacks.login(login_token)
-      refute user.login_requested_at
-    end
-
-    test "updates the last_login_at", %{login_token: login_token} do
-      {:ok, user} = Callbacks.login(login_token)
-      assert user.last_login_at
-    end
-
-    test "returns :invalid_token when not found" do
+    test "handles invalid token" do
       assert {:error, %CaseClauseError{}} = Callbacks.login("bogus")
     end
   end
@@ -38,26 +28,21 @@ defmodule Passwordless.CallbacksTest do
     setup do: Invite.registration_params(@email)
 
     test "returns {:ok, user} when successful", %{registration_token: token} do
-      assert {:ok, %TestUser{}} = Callbacks.register(token)
+      assert {:ok, %TestUser{}} = Callbacks.register(token, &create_user/1)
     end
 
     test "sets the email for the new user", %{registration_token: token} do
-      {:ok, user} = Callbacks.register(token)
+      {:ok, user} = Callbacks.register(token, &create_user/1)
       assert user.email
     end
 
-    test "sets the last_login_at", %{registration_token: token} do
-      {:ok, user} = Callbacks.register(token)
-      assert user.last_login_at
+    test "handles invalid changeset", %{registration_token: token} do
+      {:ok, _} = create_user(@email)
+      assert {:error, %Ecto.Changeset{}} = Callbacks.register(token, &create_user/1)
     end
 
-    test "returns {:error, changeset} when invalid", %{registration_token: token} do
-      create_user!(@email)
-      assert {:error, %Ecto.Changeset{}} = Callbacks.register(token)
-    end
-
-    test "returns :invalid_token with invalid token" do
-      assert {:error, %CaseClauseError{}} = Callbacks.register("fillibuster")
+    test "handles invalid token" do
+      assert {:error, %CaseClauseError{}} = Callbacks.register("fillibuster", &create_user/1)
     end
   end
 end

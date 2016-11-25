@@ -1,13 +1,11 @@
 defmodule Passwordless.Callbacks do
-  alias Passwordless.Config
-
   def login(token) do
     deserialize(token)
   end
 
   def register(token, insert_fn) do
-    with {:ok, result} <- deserialize(token) 
-         {:ok, user} <- insert_fn.(email)
+    with {:ok, email} <- deserialize(token),
+         {:ok, user} <- insert_fn.(email),
          do: {:ok, user}
   end
 

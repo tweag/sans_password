@@ -11,15 +11,15 @@ defmodule Passwordless.Invite do
   """
   def invite_to_login(email, params \\ [], opts \\ [])
   def invite_to_login(nil, _params, _opts), do: nil
-  def invite_to_login(%{login_requested_at: _} = user, params, opts) do
+  def invite_to_login(%{id: id, __struct__: _} = user, params, opts) when not is_nil(id) do
     email_name = Keyword.get(opts, :email, :login)
     params = login_params(user, params)
-    Config.mailer.deliver(email_name, params)
+    Config.mailer.deliver(email_name, user, params)
     user
   end
   def invite_to_login(email, params, opts) when is_binary(email) do
     if user = email |> to_email_query |> Config.repo.one do
-      invite(user, params, opts)
+      invite_to_login(user, params, opts)
     end
   end
 

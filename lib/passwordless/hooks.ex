@@ -16,7 +16,7 @@ defmodule Passwordless.Hooks do
       def register(email) do
         Config.schema
         |> struct
-        |> Config.schema.passwordless_changeset(%{email: email}, :callback)
+        |> Config.schema.changeset(%{email: email})
         |> Config.repo.insert
       end
 
