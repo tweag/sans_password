@@ -18,9 +18,7 @@ defmodule Passwordless.Controller do
         |> new(params)
       end
       def create(conn, %{"session" => %{"email" => email}} = params) do
-        unless Invite.invite_to_login(email) do
-          Invite.invite_to_register(email)
-        end
+        @hooks.invite(email)
 
         conn
         |> put_flash(:info, "A login link has been sent to #{email}.")
@@ -53,8 +51,6 @@ defmodule Passwordless.Controller do
             |> put_flash(:info, "You are now logged in.")
             |> redirect(to: @hooks.after_login_path(conn, params))
           {:error, error} ->
-            IO.puts("An error occurred: #{inspect error}")
-
             conn
             |> put_flash(:error, @hooks.translate_error(error))
             |> redirect(to: @hooks.after_login_failed_path(conn, :new))
