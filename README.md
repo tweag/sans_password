@@ -7,6 +7,8 @@ Passwordless supports two different authentication flows:
 + _Login_ - When a user enters their email address, if their account exists, they'll be sent an email containing a link to login.
 + _Register_ - When a user enters their email address, if their account does not exist, they'll be sent an email containing a link. When they click the link, an account will be created using the provided email address, and they'll be signed in.
 
+See the source code for the demo app [here](https://github.com/promptworks/passwordless_demo).
+
 ## Installation
 
 1. Add `passwordless` to your list of dependencies in `mix.exs`:
