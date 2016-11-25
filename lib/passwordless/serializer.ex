@@ -17,7 +17,11 @@ defmodule Passwordless.Serializer do
     {:ok, email}
   end
   def from_token("User:" <> id) do
-    {:ok, Config.repo.get(Config.schema, id)}
+    if user = Config.repo.get(Config.schema, id) do
+      {:ok, user}
+    else
+      {:error, "Resource not found."}
+    end
   end
   def from_token(_) do
     {:error, "Unknown resource type"}
