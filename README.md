@@ -175,3 +175,11 @@ When rendering the email template, all that matters is that you include the logi
 ```eex
 <%= link "Click here to login", to: session_url(MyApp.Endpoint, :callback, @params) %>
 ```
+
+# Accessing the current user
+
+Under the hood, Passwordless just uses Guardian, so to get the current user, just say:
+
+```elixir
+Guardian.Plug.current_resource(conn)
+```
