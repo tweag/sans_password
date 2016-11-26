@@ -27,8 +27,7 @@ def application do
 end
 ```
 
-
-## Configuration
+## Usage
 
 First, you'll need to configure passwordless and guardian. A minimal configuration looks like this:
 
@@ -53,7 +52,7 @@ You'll want to look at [Guardian's documentation](https://github.com/ueberauth/g
 
 The configuration above uses Bamboo for emails, but you could very easily implement your own adapter.
 
-## Controllers/Views
+### Controllers/Views
 
 Passwordless includes a macro for creating a controller. You'll need to tell it which view to use to render templates, as well as which module to use for hooks.
 
@@ -101,7 +100,7 @@ Then, create a template for the login form:
 <% end %>
 ```
 
-## Routing
+### Routing
 
 We'll need to add Guardian's plugs to our routes, and declare routes for our new session controller.
 
@@ -137,7 +136,7 @@ scope "/", MyApp do
 end
 ```
 
-## Mailers
+### Mailers
 
 Here's an example Emails module using Bamboo:
 
@@ -176,7 +175,41 @@ When rendering the email template, all that matters is that you include the logi
 <%= link "Click here to login", to: session_url(MyApp.Endpoint, :callback, @params) %>
 ```
 
-## Accessing the current user
+### Trackable (optional)
+
+Add the required fields in a migration:
+
+```elixir
+alter table(:users) do
+  add :sign_in_count, :integer, default: 0
+  add :last_sign_in_ip, :string
+  add :last_sign_in_at, :datetime
+  add :current_sign_in_ip, :string
+  add :current_sign_in_at, :datetime
+end
+```
+
+Make some minor tweaks to your model:
+
+```elixir
+defmodule MyApp.User do
+  use Passwordless.Schema
+
+  schema "users" do
+    # ...
+    trackable_fields()
+  end
+end
+```
+
+Configure Guardian to use `Passwordless.Trackable` module:
+
+```elixir
+config :guardian, Guardian,
+  hooks: Passwordless.Trackable
+```
+
+### Accessing the current user
 
 Under the hood, Passwordless just uses Guardian, so to get the current user, just say:
 
