@@ -25,8 +25,8 @@ defmodule Passwordless.SerializerTest do
       [user: TestRepo.insert!(%TestUser{email: "user@example.com"})]
     end
 
-    test "with a user", %{user: user} do
-      assert {:ok, ^user} = Serializer.from_token("User:#{user.id}")
+    test "with a user", %{user: %{id: id}} do
+      assert {:ok, %TestUser{id: ^id}} = Serializer.from_token("User:#{id}")
     end
 
     test "with a non-existent user" do
