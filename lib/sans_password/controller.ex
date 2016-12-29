@@ -1,7 +1,7 @@
-defmodule Passwordless.Controller do
+defmodule SansPassword.Controller do
   defmacro __using__([view: view, hooks: hooks]) do
     quote do
-      alias Passwordless.{Invite, Callbacks, Config}
+      alias SansPassword.{Invite, Callbacks, Config}
 
       @hooks unquote(hooks)
       @view unquote(view)

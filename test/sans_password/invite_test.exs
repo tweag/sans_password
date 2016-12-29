@@ -1,6 +1,6 @@
-defmodule Passwordless.InviteTest do
-  use Passwordless.Case
-  alias Passwordless.{Invite, TestUser, TestRepo}
+defmodule SansPassword.InviteTest do
+  use SansPassword.Case
+  alias SansPassword.{Invite, TestUser, TestRepo}
 
   @email "user@example.com"
 

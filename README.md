@@ -1,21 +1,21 @@
-# Passwordless
+# SansPassword
 
-A simple, passwordless authentication system based on [Guardian](https://github.com/ueberauth/guardian).
+A simple, sans_password authentication system based on [Guardian](https://github.com/ueberauth/guardian).
 
-Passwordless supports two different authentication flows:
+SansPassword supports two different authentication flows:
 
 + _Login_ - When a user enters their email address, if their account exists, they'll be sent an email containing a link to login.
 + _Register_ - When a user enters their email address, if their account does not exist, they'll be sent an email containing a link. When they click the link, an account will be created using the provided email address, and they'll be signed in.
 
-See the source code for the demo app [here](https://github.com/promptworks/passwordless_demo).
+See the source code for the demo app [here](https://github.com/promptworks/sans_password_demo).
 
 ## Installation
 
-1. Add `passwordless` to your list of dependencies in `mix.exs`:
+1. Add `sans_password` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:passwordless, "~> 0.1.0"}]
+  [{:sans_password, "~> 0.1.0"}]
 end
 ```
 
@@ -23,21 +23,21 @@ end
 
 ```elixir
 def application do
-  [applications: [:passwordless]]
+  [applications: [:sans_password]]
 end
 ```
 
 ## Usage
 
-First, you'll need to configure passwordless and guardian. A minimal configuration looks like this:
+First, you'll need to configure sans_password and guardian. A minimal configuration looks like this:
 
 ```elixir
-config :passwordless, Passwordless,
+config :sans_password, SansPassword,
   repo: MyApp.Repo,
   schema: MyApp.User,
-  mailer: Passwordless.Adapters.Bamboo
+  mailer: SansPassword.Adapters.Bamboo
 
-config :passwordless, Passwordless.Adapters.Bamboo,
+config :sans_password, SansPassword.Adapters.Bamboo,
   emails: MyApp.Emails,
   mailer: MyApp.Mailer
 
@@ -45,7 +45,7 @@ config :guardian, Guardian,
   issuer: "MyApp",
   ttl: {30, :days},
   secret_key: "super secret key!",
-  serializer: Passwordless.Serializer
+  serializer: SansPassword.Serializer
 ```
 
 You'll want to look at [Guardian's documentation](https://github.com/ueberauth/guardian) for all of it's configuration options.
@@ -54,18 +54,18 @@ The configuration above uses Bamboo for emails, but you could very easily implem
 
 ### Controllers/Views
 
-Passwordless includes a macro for creating a controller. You'll need to tell it which view to use to render templates, as well as which module to use for hooks.
+SansPassword includes a macro for creating a controller. You'll need to tell it which view to use to render templates, as well as which module to use for hooks.
 
-`Passwordless.Hooks` brings in a behaviour that will tell you which functions need to be implemented.
+`SansPassword.Hooks` brings in a behaviour that will tell you which functions need to be implemented.
 
 ```elixir
 # web/views/session_controller.ex
 defmodule MyApp.SessionController do
   use MyApp.Web, :controller
-  use Passwordless.Hooks
+  use SansPassword.Hooks
   use Passwordles.Controller, view: MyApp.SessionView, hooks: __MODULE__
 
-  # Passwordless.Hooks requires that you implement the following functions:
+  # SansPassword.Hooks requires that you implement the following functions:
 
   def after_invite_path(conn, _params), do: session_path(conn, :new)
   def after_invite_failed_path(conn, _params), do: session_path(conn, :new)
@@ -193,7 +193,7 @@ Make some minor tweaks to your model:
 
 ```elixir
 defmodule MyApp.User do
-  use Passwordless.Schema
+  use SansPassword.Schema
 
   schema "users" do
     # ...
@@ -202,16 +202,16 @@ defmodule MyApp.User do
 end
 ```
 
-Configure Guardian to use `Passwordless.Trackable` module:
+Configure Guardian to use `SansPassword.Trackable` module:
 
 ```elixir
 config :guardian, Guardian,
-  hooks: Passwordless.Trackable
+  hooks: SansPassword.Trackable
 ```
 
 ### Accessing the current user
 
-Under the hood, Passwordless just uses Guardian, so to get the current user, just say:
+Under the hood, SansPassword just uses Guardian, so to get the current user, just say:
 
 ```elixir
 Guardian.Plug.current_resource(conn)

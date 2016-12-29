@@ -1,4 +1,4 @@
-defmodule Passwordless.Callbacks do
+defmodule SansPassword.Callbacks do
   def login(token) do
     deserialize(token)
   end

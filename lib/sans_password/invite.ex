@@ -1,9 +1,9 @@
-defmodule Passwordless.Invite do
+defmodule SansPassword.Invite do
   defstruct [:email]
 
   import Ecto.Query, only: [from: 2]
 
-  alias Passwordless.Config
+  alias SansPassword.Config
 
   @doc """
   Sends an email to a user inviting them to login. If the user is not found,

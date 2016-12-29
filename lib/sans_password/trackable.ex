@@ -1,6 +1,6 @@
-defmodule Passwordless.Trackable do
+defmodule SansPassword.Trackable do
   use Guardian.Hooks
-  alias Passwordless.Config
+  alias SansPassword.Config
 
   def after_sign_in(conn, _params) do
     track(conn, :sign_in)

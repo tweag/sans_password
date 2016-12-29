@@ -1,7 +1,7 @@
-defmodule Passwordless.SerializerTest do
-  use Passwordless.Case
+defmodule SansPassword.SerializerTest do
+  use SansPassword.Case
 
-  alias Passwordless.{Invite, Serializer, TestUser, TestRepo}
+  alias SansPassword.{Invite, Serializer, TestUser, TestRepo}
 
   describe "for_token/1" do
     test "with a user" do

@@ -1,7 +1,7 @@
-defmodule Passwordless.HooksTest do
-  use Passwordless.Case
+defmodule SansPassword.HooksTest do
+  use SansPassword.Case
 
-  alias Passwordless.{Hooks, TestUser}
+  alias SansPassword.{Hooks, TestUser}
 
   test "register/1" do
     assert {:ok, %TestUser{}} = Hooks.register("user@example.com")

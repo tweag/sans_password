@@ -1,4 +1,4 @@
-defmodule Passwordless.TestRepo.Migrations.MigrateAll do
+defmodule SansPassword.TestRepo.Migrations.MigrateAll do
   use Ecto.Migration
 
   def change do

@@ -1,5 +1,5 @@
-defmodule Passwordless.Hooks do
-  alias Passwordless.{Config, Invite}
+defmodule SansPassword.Hooks do
+  alias SansPassword.{Config, Invite}
 
   @callback invite(email :: String.t) :: any()
   @callback register(email :: String.t) :: tuple()
@@ -12,11 +12,11 @@ defmodule Passwordless.Hooks do
 
   defmacro __using__(_) do
     quote do
-      @behaviour Passwordless.Hooks
+      @behaviour SansPassword.Hooks
 
-      defdelegate invite(email), to: Passwordless.Hooks
-      defdelegate register(email), to: Passwordless.Hooks
-      defdelegate translate_error(error), to: Passwordless.Hooks
+      defdelegate invite(email), to: SansPassword.Hooks
+      defdelegate register(email), to: SansPassword.Hooks
+      defdelegate translate_error(error), to: SansPassword.Hooks
 
       defoverridable [invite: 1, register: 1, translate_error: 1]
     end
@@ -42,7 +42,7 @@ defmodule Passwordless.Hooks do
     #{inspect error}
 
     If you want to handle this error, override translate_error/1 in your
-    Passwordless hooks module.
+    SansPassword hooks module.
     """
 
     "An error occurred."

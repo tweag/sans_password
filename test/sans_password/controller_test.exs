@@ -1,7 +1,7 @@
-defmodule Passwordless.ControllerTest do
-  use Passwordless.ConnCase
+defmodule SansPassword.ControllerTest do
+  use SansPassword.ConnCase
 
-  alias Passwordless.{TestRepo, TestUser, TestController}
+  alias SansPassword.{TestRepo, TestUser, TestController}
 
   @existing_email "existing@example.com"
   @new_email "new@example.com"
@@ -84,8 +84,8 @@ defmodule Passwordless.ControllerTest do
     end
 
     setup %{user: user}, do: [
-      login: parameterize(Passwordless.Invite.login_params(user)),
-      register: parameterize(Passwordless.Invite.registration_params(@new_email))
+      login: parameterize(SansPassword.Invite.login_params(user)),
+      register: parameterize(SansPassword.Invite.registration_params(@new_email))
     ]
 
     test "logs the user in with a login token", %{conn: conn, login: login} do

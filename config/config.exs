@@ -5,21 +5,21 @@ use Mix.Config
 config :logger, level: :warn
 
 config :guardian, Guardian,
-  issuer: "PasswordlessTest",
+  issuer: "SansPasswordTest",
   ttl: {30, :days},
   secret_key: "really really really really really really really really secret",
-  serializer: Passwordless.Serializer
+  serializer: SansPassword.Serializer
 
-config :passwordless, Passwordless,
-  mailer: Passwordless.TestMailer,
-  schema: Passwordless.TestUser,
-  repo: Passwordless.TestRepo
+config :sans_password, SansPassword,
+  mailer: SansPassword.TestMailer,
+  schema: SansPassword.TestUser,
+  repo: SansPassword.TestRepo
 
-config :passwordless, Passwordless.TestRepo,
+config :sans_password, SansPassword.TestRepo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "passwordless_test",
+  database: "sans_password_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
@@ -31,11 +31,11 @@ config :passwordless, Passwordless.TestRepo,
 
 # You can configure for your application as:
 #
-#     config :passwordless, key: :value
+#     config :sans_password, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:passwordless, :key)
+#     Application.get_env(:sans_password, :key)
 #
 # Or configure a 3rd-party app:
 #

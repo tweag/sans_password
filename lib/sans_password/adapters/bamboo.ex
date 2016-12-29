@@ -1,5 +1,5 @@
-defmodule Passwordless.Adapters.Bamboo do
-  alias Passwordless.Config
+defmodule SansPassword.Adapters.Bamboo do
+  alias SansPassword.Config
 
   def deliver(name, email, params) do
     emails = Config.get!(:emails, __MODULE__)

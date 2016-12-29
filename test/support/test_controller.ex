@@ -1,13 +1,13 @@
-defmodule Passwordless.TestController do
+defmodule SansPassword.TestController do
   use Phoenix.Controller
 
-  use Passwordless.Controller, [
+  use SansPassword.Controller, [
     view: __MODULE__.TestView,
     hooks: __MODULE__.TestHooks
   ]
 
   defmodule TestHooks do
-    use Passwordless.Hooks
+    use SansPassword.Hooks
 
     def after_invite_path(_conn, _params), do: "/invite_success"
     def after_invite_failed_path(_conn, _params), do: "/invite_failed"

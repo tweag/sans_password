@@ -1,7 +1,7 @@
-defmodule Passwordless.Serializer do
+defmodule SansPassword.Serializer do
   @behaviour Guardian.Serializer
 
-  alias Passwordless.{Config, Invite}
+  alias SansPassword.{Config, Invite}
 
   def for_token(invite = %Invite{}) do
     {:ok, "Invite:#{invite.email}"}

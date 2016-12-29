@@ -1,6 +1,6 @@
-defmodule Passwordless.TestUser do
+defmodule SansPassword.TestUser do
   use Ecto.Schema
-  use Passwordless.Schema
+  use SansPassword.Schema
 
   import Ecto.Changeset
 

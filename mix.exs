@@ -1,8 +1,8 @@
-defmodule Passwordless.Mixfile do
+defmodule SansPassword.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :passwordless,
+    [app: :sans_password,
      version: "0.1.0",
      elixir: "~> 1.3",
      elixirc_paths: elixirc_paths(Mix.env),

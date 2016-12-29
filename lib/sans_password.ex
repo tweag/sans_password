@@ -1,2 +1,2 @@
-defmodule Passwordless do
+defmodule SansPassword do
 end

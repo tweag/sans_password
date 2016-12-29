@@ -1,6 +1,6 @@
-defmodule Passwordless.CallbacksTest do
-  use Passwordless.Case
-  alias Passwordless.{Callbacks, Invite, TestUser, TestRepo}
+defmodule SansPassword.CallbacksTest do
+  use SansPassword.Case
+  alias SansPassword.{Callbacks, Invite, TestUser, TestRepo}
 
   @email "user@example.com"
 

@@ -1,18 +1,18 @@
-defmodule Passwordless.ConnCase do
+defmodule SansPassword.ConnCase do
   use ExUnit.CaseTemplate
 
   @secret "12345ksadfjlaskfjadsklfjaskldfjalsdkjfaklsdjfladksjfadkljflkadsjfkl678"
 
   @signing_opts [
     store: :cookie,
-    key: "passwordless-test",
+    key: "sans_password-test",
     signing_salt: "signing salt",
     encrypt: false
   ]
 
   using do
     quote do
-      use Passwordless.Case
+      use SansPassword.Case
       use Phoenix.ConnTest
     end
   end

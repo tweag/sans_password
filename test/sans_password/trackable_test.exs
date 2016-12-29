@@ -1,6 +1,6 @@
-defmodule Passwordless.TrackableTest do
-  use Passwordless.ConnCase
-  alias Passwordless.{Trackable, TestUser, TestRepo}
+defmodule SansPassword.TrackableTest do
+  use SansPassword.ConnCase
+  alias SansPassword.{Trackable, TestUser, TestRepo}
 
   setup %{conn: conn} do
     user = TestRepo.insert!(%TestUser{email: "user@example.com"})

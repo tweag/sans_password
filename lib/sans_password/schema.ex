@@ -1,4 +1,4 @@
-defmodule Passwordless.Schema do
+defmodule SansPassword.Schema do
   @trackable [
     :sign_in_count,
     :last_sign_in_at,
@@ -9,10 +9,10 @@ defmodule Passwordless.Schema do
 
   defmacro __using__(_) do
     quote do
-      import Passwordless.Schema
+      import SansPassword.Schema
 
-      defdelegate trackable_changeset(struct), to: Passwordless.Schema
-      defdelegate trackable_changeset(struct, params), to: Passwordless.Schema
+      defdelegate trackable_changeset(struct), to: SansPassword.Schema
+      defdelegate trackable_changeset(struct, params), to: SansPassword.Schema
     end
   end
 

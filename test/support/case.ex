@@ -1,17 +1,17 @@
-defmodule Passwordless.Case do
+defmodule SansPassword.Case do
   use ExUnit.CaseTemplate
 
   using do
     quote do
-      import Passwordless.Case
+      import SansPassword.Case
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Passwordless.TestRepo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(SansPassword.TestRepo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Passwordless.TestRepo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(SansPassword.TestRepo, {:shared, self()})
     end
 
     :ok
