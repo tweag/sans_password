@@ -1,6 +1,6 @@
 # SansPassword
 
-A simple, sans_password authentication system based on [Guardian](https://github.com/ueberauth/guardian).
+A simple, passwordless authentication system based on [Guardian](https://github.com/ueberauth/guardian).
 
 SansPassword supports two different authentication flows:
 
@@ -29,7 +29,7 @@ end
 
 ## Usage
 
-First, you'll need to configure sans_password and guardian. A minimal configuration looks like this:
+First, you'll need to configure `sans_password` and `guardian`. A minimal configuration looks like this:
 
 ```elixir
 config :sans_password, SansPassword,
