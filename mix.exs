@@ -8,6 +8,8 @@ defmodule SansPassword.Mixfile do
      elixirc_paths: elixirc_paths(Mix.env),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     description: description(),
+     package: package(),
      deps: deps()]
   end
 
@@ -31,7 +33,8 @@ defmodule SansPassword.Mixfile do
     [{:ecto, "~> 2.0"},
      {:guardian, "~> 0.13"},
      {:phoenix, "~> 1.2", optional: true},
-     {:postgrex, "~> 0.12", only: :test}]
+     {:postgrex, "~> 0.12", only: :test},
+     {:ex_doc, ">= 0.0.0", only: :dev}]
   end
 
   defp applications(:test), do: [:logger, :phoenix, :ecto, :postgrex]
@@ -39,4 +42,16 @@ defmodule SansPassword.Mixfile do
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_),     do: ["lib"]
+
+  defp description do
+    "A simple, passwordless authentication system based on Guardian."
+  end
+
+  defp package do
+    [name: :sans_password,
+     files: ["lib", "mix.exs", "README.md", "LICENSE.txt"],
+     maintainers: ["Ray Zane"],
+     licenses: ["MIT"],
+     links: %{"GitHub" => "https://github.com/promptworks/sans_password"}]
+  end
 end
