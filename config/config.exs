@@ -4,24 +4,8 @@ use Mix.Config
 
 config :logger, level: :warn
 
-config :guardian, Guardian,
-  issuer: "SansPasswordTest",
-  ttl: {30, :days},
-  secret_key: "really really really really really really really really secret",
-  serializer: SansPassword.Serializer
-
-config :sans_password, SansPassword,
-  mailer: SansPassword.TestMailer,
-  schema: SansPassword.TestUser,
-  repo: SansPassword.TestRepo
-
-config :sans_password, SansPassword.TestRepo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "sans_password_test",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+config :sans_password, SansPassword.Dummy.Guardian,
+  secret_key: "asdklfasjfkladsjfaklsjfaksdfjkaslfjakslfjdklasjfdklsajfkalsjf"
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
