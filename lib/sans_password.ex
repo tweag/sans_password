@@ -61,9 +61,8 @@ defmodule SansPassword do
   end
 
   def send_magic_link(guardian, resource, claims \\ %{}) do
-    with {:ok, magic_token, claims} <- guardian.encode_magic(resource, claims),
-         :ok <- guardian.deliver_magic_link(resource, magic_token)
-    do
+    with {:ok, magic_token, claims} <- guardian.encode_magic(resource, claims) do
+      guardian.deliver_magic_link(resource, magic_token)
       {:ok, magic_token, claims}
     end
   end
