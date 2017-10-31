@@ -10,7 +10,8 @@ defmodule SansPassword.Mixfile do
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       package: package(),
-      deps: deps()
+      deps: deps(),
+      aliases: aliases()
     ]
   end
 
@@ -22,7 +23,7 @@ defmodule SansPassword.Mixfile do
   defp package do
     [
       name: :sans_password,
-      description: "A passwordless authentication system based on Guardian.",
+      description: "Passwordless authentication utilities based on Guardian.",
       files: ["lib", "mix.exs", "README.md", "LICENSE.txt"],
       maintainers: ["Ray Zane"],
       licenses: ["MIT"],
@@ -33,10 +34,11 @@ defmodule SansPassword.Mixfile do
   defp deps do
     [
       {:guardian, "~> 1.0-beta"},
-      {:ecto, "~> 2.1", optional: true},
-      {:postgrex, ">= 0.0.0", optional: true},
-      {:plug, "~> 1.0", optional: true},
       {:ex_doc, ">= 0.0.0", only: :dev}
     ]
+  end
+
+  def aliases do
+    ["test.setup": ["ecto.drop", "ecto.create", "ecto.migrate"]]
   end
 end

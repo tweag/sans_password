@@ -1,31 +1,35 @@
 defmodule SansPassword.Dummy.User do
-  use Ecto.Schema
-  import Ecto.Changeset
-
-  schema "users" do
-    field :email, :string
-    timestamps()
-  end
-
-  def changeset(user, params \\ %{}) do
-    user
-    |> cast(params, [:email])
-  end
+  @enforce_keys [:id]
+  defstruct [:id]
 end
 
-defmodule SansPassword.Dummy.Repo do
-  use Ecto.Repo, otp_app: :sans_password
+defmodule SansPassword.Dummy.Mailer do
+  use Agent
+
+  def start_link(_) do
+    Agent.start_link(fn -> [] end, name: __MODULE__)
+  end
+
+  def sent_emails do
+    Agent.get(__MODULE__, &(&1))
+  end
+
+  def deliver(args) do
+    Agent.update(__MODULE__, fn state ->
+      [args | state]
+    end)
+  end
 end
 
 defmodule SansPassword.Dummy.Guardian do
   use Guardian, otp_app: :sans_password
   use SansPassword
 
-  alias SansPassword.Dummy.{Repo, User}
+  alias SansPassword.Dummy.{Mailer, User}
 
   @impl true
-  def subject_for_token(resource, _claims) do
-    case resource.id do
+  def subject_for_token(user, _claims) do
+    case user.id do
       nil -> {:error, :invalid}
       id  -> {:ok, to_string(id)}
     end
@@ -33,26 +37,12 @@ defmodule SansPassword.Dummy.Guardian do
 
   @impl true
   def resource_from_claims(%{"sub" => id}) do
-    case Repo.get(User, id) do
-      nil  -> {:error, :not_found}
-      user -> {:ok, user}
-    end
+    {id, _} = Integer.parse(id)
+    {:ok, %User{id: id}}
   end
 
   @impl true
-  def resource_from_params(%{"email" => email}) do
-    case Repo.get_by(User, email: email) do
-      nil ->
-        %User{}
-        |> User.changeset(%{email: email})
-        |> Repo.insert()
-        |> case do
-          {:ok, user} -> {:ok, user}
-          {:error, _} -> {:error, :validation_error}
-        end
-
-      user ->
-        {:ok, user}
-    end
+  def deliver_magic_link(user, magic_token) do
+    Mailer.deliver({user, magic_token})
   end
 end

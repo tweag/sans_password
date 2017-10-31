@@ -5,13 +5,12 @@ use Mix.Config
 config :logger, level: :warn
 
 config :sans_password, SansPassword.Dummy.Guardian,
-  secret_key: "asdklfasjfkladsjfaklsjfaksdfjkaslfjakslfjdklasjfdklsajfkalsjf"
-
-config :sans_password, SansPassword.Dummy.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "sans_password_test"
+  secret_key: "asdklfasjfkladsjfaklsjfaksdfjkaslfjakslfjdklasjfdklsajfkalsjf",
+  issuer: "sans_password",
+  token_ttl: %{
+    "login" => {30, :minutes},
+    "access" => {1, :days}
+  }
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
