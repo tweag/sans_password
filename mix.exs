@@ -33,6 +33,8 @@ defmodule SansPassword.Mixfile do
   defp deps do
     [
       {:guardian, "~> 1.0-beta"},
+      {:ecto, "~> 2.1", optional: true},
+      {:postgrex, ">= 0.0.0", optional: true},
       {:plug, "~> 1.0", optional: true},
       {:ex_doc, ">= 0.0.0", only: :dev}
     ]

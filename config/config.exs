@@ -7,6 +7,12 @@ config :logger, level: :warn
 config :sans_password, SansPassword.Dummy.Guardian,
   secret_key: "asdklfasjfkladsjfaklsjfaksdfjkaslfjakslfjdklasjfdklsajfkalsjf"
 
+config :sans_password, SansPassword.Dummy.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "postgres",
+  password: "postgres",
+  database: "sans_password_test"
+
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
 # file won't be loaded nor affect the parent project. For this reason,
