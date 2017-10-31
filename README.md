@@ -18,7 +18,7 @@ Next, follow Guardian's [installation instructions](https://github.com/ueberauth
 
 Now, you should have a `Guardian` module, so you can sprinkle in `SansPassword`.
 
-```
+```elixir
 defmodule MyApp.Guardian do
   use Guardian, otp_app: :my_app
   use SansPassword
@@ -72,7 +72,7 @@ MyApp.Guardian.Plug.sign_in(user)
 
 ### Trackable (optional)
 
-To track your users sessions, see [guardian_track](https://github.com/promptworks/guardian_track).
+To track your users sessions, see [guardian_trackable](https://github.com/promptworks/guardian_trackable).
 
 ### Accessing the current user
 
