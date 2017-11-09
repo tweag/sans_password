@@ -26,9 +26,9 @@ defmodule MyApp.Guardian do
   ...
 
   @impl true
-  def deliver_magic_link(user, magic_token) do
+  def deliver_magic_link(user, magic_token, extra_params) do
     user
-    |> MyMailer.magic_link_email(magic_token)
+    |> MyMailer.magic_link_email(magic_token, extra_params)
     |> MyMailer.deliver
   end
 end

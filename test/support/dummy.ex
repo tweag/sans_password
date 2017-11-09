@@ -42,7 +42,7 @@ defmodule SansPassword.Dummy.Guardian do
   end
 
   @impl true
-  def deliver_magic_link(user, magic_token) do
-    Mailer.deliver({user, magic_token})
+  def deliver_magic_link(user, magic_token, params) do
+    Mailer.deliver({user, magic_token, params})
   end
 end

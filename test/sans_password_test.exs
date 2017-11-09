@@ -27,8 +27,8 @@ defmodule SansPasswordTest do
   end
 
   test "send_magic_link", %{user: user} do
-    assert {:ok, login_token, _} = Guardian.send_magic_link(user)
-    assert Mailer.sent_emails   == [{user, login_token}]
+    assert {:ok, login_token, _} = Guardian.send_magic_link(user, %{}, %{foo: 1})
+    assert Mailer.sent_emails   == [{user, login_token, %{foo: 1}}]
     assert {:ok, ^user, _}       = Guardian.decode_magic(login_token)
   end
 end

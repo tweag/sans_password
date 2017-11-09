@@ -6,7 +6,11 @@ defmodule SansPassword do
   @magic "magic"
   @access "access"
 
-  @callback deliver_magic_link(resource :: any, magic_token :: String.t) :: any
+  @callback deliver_magic_link(
+    resource :: any,
+    magic_token :: String.t,
+    params :: map
+  ) :: any
 
   defmacro __using__(_) do
     quote do
@@ -32,8 +36,8 @@ defmodule SansPassword do
         SansPassword.exchange_magic(__MODULE__, magic_token)
       end
 
-      def send_magic_link(resource, claims \\ %{}) do
-        SansPassword.send_magic_link(__MODULE__, resource, claims)
+      def send_magic_link(resource, claims \\ %{}, params \\ %{}) do
+        SansPassword.send_magic_link(__MODULE__, resource, claims, params)
       end
     end
   end
@@ -60,9 +64,9 @@ defmodule SansPassword do
     end
   end
 
-  def send_magic_link(guardian, resource, claims \\ %{}) do
+  def send_magic_link(guardian, resource, claims \\ %{}, params \\ %{}) do
     with {:ok, magic_token, claims} <- guardian.encode_magic(resource, claims) do
-      guardian.deliver_magic_link(resource, magic_token)
+      guardian.deliver_magic_link(resource, magic_token, params)
       {:ok, magic_token, claims}
     end
   end
