@@ -1,4 +1,4 @@
-# SansPassword
+# SansPassword [![Build Status](https://travis-ci.org/promptworks/sans_password.svg?branch=master)](https://travis-ci.org/promptworks/sans_password)
 
 Passwordless authentication helpers for [Guardian](https://github.com/ueberauth/guardian).
 
