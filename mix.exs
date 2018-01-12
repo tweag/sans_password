@@ -4,7 +4,7 @@ defmodule SansPassword.Mixfile do
   def project do
     [
       app: :sans_password,
-      version: "1.0.0-beta.2",
+      version: "1.0.0",
       elixir: "~> 1.3",
       elixirc_paths: elixirc_paths(Mix.env),
       build_embedded: Mix.env == :prod,
@@ -33,7 +33,7 @@ defmodule SansPassword.Mixfile do
 
   defp deps do
     [
-      {:guardian, "~> 1.0-beta"},
+      {:guardian, "~> 1.0"},
       {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end
