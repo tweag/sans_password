@@ -7,10 +7,10 @@ defmodule SansPassword do
   @access "access"
 
   @callback deliver_magic_link(
-    resource :: any,
-    magic_token :: String.t,
-    params :: map
-  ) :: any
+              resource :: any,
+              magic_token :: String.t(),
+              params :: map
+            ) :: any
 
   defmacro __using__(_) do
     quote do
