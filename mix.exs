@@ -36,7 +36,7 @@ defmodule SansPassword.Mixfile do
       {:guardian, "~> 1.0 or ~> 2.0"},
       {:plug, ">= 0.0.0", only: [:dev, :test], optional: true},
       {:jason, ">= 0.0.0", only: :test, optional: true},
-      {:ex_doc, ">= 0.0.0", only: :dev}
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
