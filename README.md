@@ -10,7 +10,7 @@ Add `sans_password` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:sans_password, "~> 1.0.0-beta"}]
+  [{:sans_password, "~> 1.1.0"}]
 end
 ```
 
